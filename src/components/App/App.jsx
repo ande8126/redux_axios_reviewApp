@@ -1,12 +1,23 @@
 import { useState } from 'react';
 import './App.css';
 import InventoryList from '../InventoryList/InventoryList';
+import axios from 'axios';
 
 function App() {
   const [ tempItem, setTempItem ] = useState( { size: 'Tiny', color: 'Red', description: '' } );
   
   let addItem=()=>{
     console.log( ' in addItem' );
+  }
+
+  let getInventory=()=>{
+    console.log( 'in getInventory' );
+    axios.get( '/inventory' ).then( (response)=>{
+      console.log( 'back from GET with:', response );
+    } ).catch( ( err ) =>{
+      console.log( err );
+      alert( 'err' );
+    })
   }
 
   let handleColorChange=(event)=>{
@@ -46,6 +57,7 @@ function App() {
         </select>
         <input type="text" placeholder="name" onChange={ handleNameChange}></input>
         <button onClick={ addItem }>Add Item</button>
+        <button onClick={ getInventory }>Refresh</button>
       </div>
       <InventoryList />
       <p>{ JSON.stringify( tempItem ) }</p>
