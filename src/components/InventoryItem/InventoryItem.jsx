@@ -1,8 +1,7 @@
 function InventoryItem(props){
     return(
         <>
-        <h2>InventoryItem</h2>
-        <p>{ JSON.stringify( props ) }</p>
+        <li>{ props.item.color }, { props.item.size }: { props.item.name }</li>
         </>
     )
 }

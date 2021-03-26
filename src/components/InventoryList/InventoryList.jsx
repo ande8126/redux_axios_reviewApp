@@ -4,8 +4,13 @@ function InventoryList(props){
     return(
         <>
         <h2>InventoryList</h2>
-        <p>{ JSON.stringify( props ) }</p>
-        <InventoryItem />
+        <ul>
+            {  props.inventory.map( ( item, index )=>
+                <InventoryItem item={ item } key={ index }/>
+            )}
+        </ul>
+        
+        
         </>
     )
 }

@@ -5,15 +5,23 @@ import axios from 'axios';
 
 function App() {
   const [ tempItem, setTempItem ] = useState( { size: 'Tiny', color: 'Red', description: '' } );
-  
+  const [ inventory, setInventory ] = useState( [] );
   let addItem=()=>{
-    console.log( ' in addItem' );
+    console.log( ' in addItem:', tempItem );
+    axios.post( '/inventory', tempItem ).then( ( response )=>{
+      console.log( 'back from POST with:', response );
+      getInventory();
+    }).catch( ( err )=>{
+      console.log( err );
+      alert( 'nope' );
+    })
   }
 
   let getInventory=()=>{
     console.log( 'in getInventory' );
     axios.get( '/inventory' ).then( (response)=>{
       console.log( 'back from GET with:', response );
+      setInventory( response.data );
     } ).catch( ( err ) =>{
       console.log( err );
       alert( 'err' );
@@ -59,7 +67,7 @@ function App() {
         <button onClick={ addItem }>Add Item</button>
         <button onClick={ getInventory }>Refresh</button>
       </div>
-      <InventoryList />
+      <InventoryList inventory={ inventory }/>
       <p>{ JSON.stringify( tempItem ) }</p>
     </div>
   );
