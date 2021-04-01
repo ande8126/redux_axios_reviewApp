@@ -1,9 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import InventoryList from '../InventoryList/InventoryList';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
+  //lets us send info to redux store
+  const dispatch = useDispatch();
+  useEffect( ()=>{
+    getInventory();
+  }, [])
+
   const [ tempItem, setTempItem ] = useState( { size: 'Tiny', color: 'Red', description: '' } );
   const [ inventory, setInventory ] = useState( [] );
   let addItem=()=>{
@@ -21,7 +28,9 @@ function App() {
     console.log( 'in getInventory' );
     axios.get( '/inventory' ).then( (response)=>{
       console.log( 'back from GET with:', response );
-      setInventory( response.data );
+      //replace with dispatch
+      // setInventory( response.data );
+      dispatch( { type: 'setInventory', payload: response.data } )
     } ).catch( ( err ) =>{
       console.log( err );
       alert( 'err' );

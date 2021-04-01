@@ -3,11 +3,31 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App/App';
 import reportWebVitals from './reportWebVitals';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import logger from 'redux-logger';
+
+//reducers
+const inventory = ( state=[], action )=>{
+  console.log( 'in inventory reducer', action );
+  if( action.type === 'setInventory' ){
+    state = [...action.payload]
+  }
+
+  return state;
+}
+
+const store = createStore (
+  combineReducers({
+    inventory: inventory,
+  }
+), applyMiddleware( logger )
+)
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store = { store }>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
